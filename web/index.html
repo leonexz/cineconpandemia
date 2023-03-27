@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">       
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><!--Librería JQuery-->
+        <!--funcion en la cual agarra los datos de cada input mediante su id-->
+        <!--en caso q si la capacidad es menor que las butacas reservadas mandara-->
+        <!--un mensaje de error , todo se procesa en el jsp procesaSala y los-->
+        <!--resultados se mostrara en un div del mismo nombre-->
+        <script>
+            function crearsala(){
+                nums=document.getElementById("txtnumsala").value;
+                cap=document.getElementById("txtcapac").value;
+                butr = document.getElementById("txtbutacasreserv").value;
+                if (parseInt(cap) < parseInt(butr)) {
+                    alert("La cantidad de Butacas total no puede ser menor a la reserva Covid");
+                }
+                $.ajax({
+                    url: "procesaSala.jsp",
+                    type: 'POST',
+                    data: {txtnumsala: nums, txtcapac: cap, txtbutacasreserv: butr},
+                    success: function (data) {
+                        document.getElementById("resultados").innerHTML = data;
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <div class="text-center" id="contenedor-formulario"><!--para centrar el texto con nombre contenedor-formulario-->
+            <form action="procesaSala.jsp" method="post">
+                <header>
+                    <div class="shadow p-1 mb-2 bg-white rounded  justify-content-center w-75 d-inline-block" ><!-- esta caja tendra
+                    borde sombreado con padding 1 margin button 2 con el contenido 
+                    centrado con un width de 75 y estara todo en la misma linea-->
+                        <h1 >Formulario para generar nueva sala
+                        </h1><!--Para que la letras sean grandes-->
+                    </div>
+                </header>
+                <div class="bg-danger p-1"><!--Para que el background sea rojo-->
+                    <p class=" text-light font-monospace p-1" >Ingrese los datos para generar nueva sala,debera considerar
+                        un aforo reservado por norma sanitaria (Covid-19)
+                    </p><!--Para que las letras sean blancas y con un estilo de letra-->
+                </div>
+                <div class="shadow p-1 mb-2 bg-white rounded  justify-content-center w-75 d-inline-block" ><!--
+                    esta caja tendra
+                    borde sombreado con padding 1 margin button 2 con el contenido 
+                    centrado con un width de 75 y un background blanco-->
+                    <div class="form-group "><!--Para agrupar los elementos-->
+                        <div class="col-xs-4"><!--Esto señala que usara 4 columnas-->
+                            <label class="form-label font-monospace ">numero de sala:
+                                <input class="form-control" type="number" required id="txtnumsala" name="txtnumsala">
+                            </label>
+                            <label class="form-label font-monospace ">capacidad de sala:
+                                <input class="form-control" type="number" required id="txtcapac" name="txtcapac">
+                            </label>
+                            <label class="form-label font-monospace">butacas reservadas <a class="text-danger "> (COVID-19)</a>:
+                                <input class="form-control" type="number" required id="txtbutacasreserv" name="txtbutacasreserv"> 
+                            </label>
+                            <input type="button" class="btn btn-primary" onclick="crearsala()" value="Enviar"><!--boton de color azul en el
+                            cual esta enlazado con la funcion crearsala con el valor enviar-->
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <hr class="w-75 d-inline-block"><!--Es una linea semitransparente con anchura de 75 y tambien centrado-->
+            <div id="resultados" class="shadow p-1 mb-2 bg-white rounded  justify-content-center w-75 d-inline-block"></div><!--esta
+            enlazado con la funcion crearsala en el cual mostrara los resultados-->
+        </div>
+    </body>
+</html>
